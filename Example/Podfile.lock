@@ -1,0 +1,16 @@
+PODS:
+  - MNUIAdditions (0.1.0)
+
+DEPENDENCIES:
+  - MNUIAdditions (from `../`)
+
+EXTERNAL SOURCES:
+  MNUIAdditions:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  MNUIAdditions: 3120b767ba1f874ebd78c6b71e585b969c16e73f
+
+PODFILE CHECKSUM: a078124f78fa46e7ce2c91482a9be8fa0ab77edb
+
+COCOAPODS: 1.5.3
