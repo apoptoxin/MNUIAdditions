@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'MNUIAdditions_Example' do
+  pod 'MNUIAdditions', :path => '../'
+
+  target 'MNUIAdditions_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
