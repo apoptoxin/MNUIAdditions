@@ -7,14 +7,17 @@
 
 #import "MNShinUILabel.h"
 
+@interface MNShinUILabel()
+
+@end
+
 @implementation MNShinUILabel
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (NSMutableAttributedString *)textForCurrentFrame:(CFTimeInterval)timePassed forAppear:(BOOL)forAppear {
+    NSMutableAttributedString *result = [self.animationText mutableCopy];
+    for (int i = 0; i < result.length; i++) {
+        
+    }
+    return result;
 }
-*/
-
 @end

@@ -7,14 +7,126 @@
 
 #import "MNAnimatedUILabel.h"
 
+@interface MNAnimatedUILabel()
+@property (nonatomic, strong, readwrite) NSAttributedString *animationText;
+@property (nonatomic, strong) CADisplayLink *displayLink;
+@property (nonatomic, assign) CFTimeInterval startTimeInterval;
+@property (nonatomic, copy) dispatch_block_t completion;
+@property (nonatomic, assign, readwrite) BOOL animating;
+@property (nonatomic, assign) BOOL appearing;
+@end
+
 @implementation MNAnimatedUILabel
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (instancetype)init {
+    return [self initWithFrame:CGRectZero];
 }
-*/
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        [self defaultInit];
+    }
+    return self;
+}
+
+- (void)dealloc {
+    [self.displayLink removeFromRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+}
+
+- (void)defaultInit {
+    self.appearDuration = 2.5f;
+    self.fadeDuration = 2.5f;
+    _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateAppearance)];
+    _displayLink.paused = YES;
+    [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+}
+
+- (NSMutableAttributedString *)textForCurrentFrame:(CFTimeInterval)timePassed forAppear:(BOOL)forAppear {
+    return [[NSMutableAttributedString alloc] initWithString:self.text];
+}
+
+#pragma mark - Public Method
+
+- (void)startAppearingWithCompletion:(dispatch_block_t)completion {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self startAnimationWithCompletion:completion appearing:YES];
+    });
+}
+
+- (void)startFadingWithCompletion:(dispatch_block_t)completion {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self startAnimationWithCompletion:completion appearing:NO];
+    });
+}
+
+- (void)stopAnimating {
+    [self stopAnimation:NO];
+}
+
+#pragma mark - Private Method
+
+- (void)startAnimationWithCompletion:(dispatch_block_t)completion appearing:(BOOL)appearing{
+    if (self.isAnimating) {
+        return;
+    }
+    
+    self.displayLink.paused = YES;
+    self.completion = completion;
+    self.startTimeInterval = CACurrentMediaTime();
+    self.animating = YES;
+    self.appearing = appearing;
+    self.displayLink.paused = NO;
+}
+
+- (void)stopAnimation:(BOOL)callCompletionBlock {
+    self.displayLink.paused = YES;
+    self.animating = NO;
+    if (callCompletionBlock && self.completion) {
+        self.completion();
+    }
+    self.completion = nil;
+}
+
+- (NSAttributedString *)initialAnimationTextWithOriginText:(NSAttributedString *)attributedText {
+    NSMutableAttributedString* newText = [[NSMutableAttributedString alloc] initWithAttributedString:attributedText];
+    [newText addAttribute:NSForegroundColorAttributeName value:[self.textColor colorWithAlphaComponent:0.0] range:NSMakeRange(0, attributedText.length)];
+    return [newText copy];
+}
+
+#pragma mark - getter and setter
+
+- (void)setAutoAppear:(BOOL)autoAppear {
+    
+}
+
+- (void)setText:(NSString *)text {
+    [self setAttributedText:[self initialAnimationTextWithOriginText:[[NSAttributedString alloc] initWithString:text]]];
+}
+
+- (void)setAttributedText:(NSAttributedString *)attributedText {
+    self.animationText = attributedText;
+    [super setAttributedText:self.animationText];
+}
+
+#pragma mark - selector
+- (void)updateAppearance {
+    CFTimeInterval current = CACurrentMediaTime();
+    CFTimeInterval minus = current - self.startTimeInterval;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSLog(@"时间差:%f, animating:%d",minus,self.animating);
+        
+    });
+    self.attributedText = [[self textForCurrentFrame:MIN(MAX(0.0, minus), (self.appearing ? self.appearDuration : self.fadeDuration)) forAppear:self.appearing] copy];
+    
+    if (self.animating && self.appearing && minus > self.appearDuration) {
+        [self stopAnimation:YES];
+    }
+    
+    if (self.animating && !self.appearing && minus > self.fadeDuration) {
+        [self stopAnimation:YES];
+    }
+    
+}
 
 @end

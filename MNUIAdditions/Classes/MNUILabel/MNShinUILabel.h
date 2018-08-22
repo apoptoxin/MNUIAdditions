@@ -5,8 +5,8 @@
 //  Created by 刘楠 on 2018/8/21.
 //
 
-#import <UIKit/UIKit.h>
+#import "MNAnimatedUILabel.h"
 
-@interface MNShinUILabel : UILabel
+@interface MNShinUILabel : MNAnimatedUILabel
 
 @end

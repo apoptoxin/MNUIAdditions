@@ -9,12 +9,15 @@
 
 @implementation MNPrinterUILabel
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (NSMutableAttributedString *)textForCurrentFrame:(CFTimeInterval)timePassed forAppear:(BOOL)forAppear {
+    NSMutableAttributedString *result = [self.animationText mutableCopy];
+    double precent = timePassed / (forAppear ? self.appearDuration : self.fadeDuration);
+//    precent = precent > 0.0 ?:0.0;
+    int len = (int)((double)result.length * precent);
+    [result addAttribute:NSForegroundColorAttributeName value:[self.textColor colorWithAlphaComponent:forAppear?1.0:0.0] range:NSMakeRange(0, len)];
+    [result addAttribute:NSForegroundColorAttributeName value:[self.textColor colorWithAlphaComponent:forAppear?0.0:1.0] range:NSMakeRange(len , result.length - len)];
+    
+    return result;
 }
-*/
 
 @end
