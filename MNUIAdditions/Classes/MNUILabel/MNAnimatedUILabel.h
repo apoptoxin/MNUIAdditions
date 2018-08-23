@@ -12,7 +12,7 @@
 @property (assign) CFTimeInterval fadeDuration;
 @property (nonatomic, assign) BOOL autoAppear;
 
-@property (nonatomic, strong, readonly) NSAttributedString *animationText;
+@property (nonatomic, strong, readonly) NSString *animationText;
 @property (nonatomic, assign, readonly, getter=isAnimating) BOOL animating;
 
 - (void)startAppearingWithCompletion:(dispatch_block_t)completion;

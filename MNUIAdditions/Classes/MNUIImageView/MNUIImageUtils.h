@@ -8,5 +8,5 @@
 #import <Foundation/Foundation.h>
 
 @interface MNUIImageUtils : NSObject
-
++ (UIImage *)blurImageFromOrigin:(UIImage *)origin factor:(CGFloat)factor;
 @end

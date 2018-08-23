@@ -8,7 +8,7 @@
 #import "MNAnimatedUILabel.h"
 
 @interface MNAnimatedUILabel()
-@property (nonatomic, strong, readwrite) NSAttributedString *animationText;
+@property (nonatomic, strong, readwrite) NSString *animationText;
 @property (nonatomic, strong) CADisplayLink *displayLink;
 @property (nonatomic, assign) CFTimeInterval startTimeInterval;
 @property (nonatomic, copy) dispatch_block_t completion;
@@ -48,6 +48,7 @@
 #pragma mark - Public Method
 
 - (void)startAppearingWithCompletion:(dispatch_block_t)completion {
+    self.attributedText = [self initialAnimationTextWithOriginText:self.animationText];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self startAnimationWithCompletion:completion appearing:YES];
     });
@@ -87,9 +88,9 @@
     self.completion = nil;
 }
 
-- (NSAttributedString *)initialAnimationTextWithOriginText:(NSAttributedString *)attributedText {
-    NSMutableAttributedString* newText = [[NSMutableAttributedString alloc] initWithAttributedString:attributedText];
-    [newText addAttribute:NSForegroundColorAttributeName value:[self.textColor colorWithAlphaComponent:0.0] range:NSMakeRange(0, attributedText.length)];
+- (NSAttributedString *)initialAnimationTextWithOriginText:(NSString *)text {
+    NSMutableAttributedString* newText = [[NSMutableAttributedString alloc] initWithString:text];
+    [newText addAttribute:NSForegroundColorAttributeName value:[UIColor clearColor] range:NSMakeRange(0, text.length)];
     return [newText copy];
 }
 
@@ -100,23 +101,16 @@
 }
 
 - (void)setText:(NSString *)text {
-    [self setAttributedText:[self initialAnimationTextWithOriginText:[[NSAttributedString alloc] initWithString:text]]];
-}
-
-- (void)setAttributedText:(NSAttributedString *)attributedText {
-    self.animationText = attributedText;
-    [super setAttributedText:self.animationText];
+    self.animationText = [text copy];
+    NSAttributedString *a = [self initialAnimationTextWithOriginText:text];
+    self.attributedText = a;
 }
 
 #pragma mark - selector
 - (void)updateAppearance {
     CFTimeInterval current = CACurrentMediaTime();
     CFTimeInterval minus = current - self.startTimeInterval;
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSLog(@"时间差:%f, animating:%d",minus,self.animating);
-        
-    });
+
     self.attributedText = [[self textForCurrentFrame:MIN(MAX(0.0, minus), (self.appearing ? self.appearDuration : self.fadeDuration)) forAppear:self.appearing] copy];
     
     if (self.animating && self.appearing && minus > self.appearDuration) {
