@@ -64,8 +64,10 @@
         _label.text = @"abcdefghijklmnopqrstuvwxyz";
         _label.numberOfLines = 0;
         _label.font = [UIFont systemFontOfSize:60];
-    CGSize size = [_label.text sizeWithFont:_label.font constrainedToSize:CGSizeMake(self.view.frame.size.width - 50.0f,10000.0f)lineBreakMode:UILineBreakModeWordWrap];
+        CGSize size = [_label.text sizeWithFont:_label.font constrainedToSize:CGSizeMake(self.view.frame.size.width - 50.0f,10000.0f)lineBreakMode:UILineBreakModeWordWrap];
+        
         _label.frame = CGRectMake(0, 0, size.width, size.height);
+//        _label.animationTextColor = [UIColor orangeColor];
         
     }
     return _label;

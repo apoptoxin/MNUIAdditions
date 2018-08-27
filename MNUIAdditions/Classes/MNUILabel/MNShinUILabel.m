@@ -66,7 +66,7 @@
         } else if (!forAppear && timePassed >= self.fadeDuration) {
             alpha = 1.0f;
         }
-        [result addAttribute:NSForegroundColorAttributeName value:[self.textColor colorWithAlphaComponent:forAppear?alpha:1-alpha] range:NSMakeRange(i, 1)];
+        [result addAttribute:NSForegroundColorAttributeName value:[self.animationTextColor colorWithAlphaComponent:forAppear?alpha:1-alpha] range:NSMakeRange(i, 1)];
     }
     return result;
 }

@@ -100,6 +100,13 @@
     
 }
 
+- (UIColor *)animationTextColor {
+    if (!_animationTextColor) {
+        _animationTextColor = [UIColor whiteColor];
+    }
+    return _animationTextColor;
+}
+
 - (void)setText:(NSString *)text {
     self.animationText = [text copy];
     NSAttributedString *a = [self initialAnimationTextWithOriginText:text];

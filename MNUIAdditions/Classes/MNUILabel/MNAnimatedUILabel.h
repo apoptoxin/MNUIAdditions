@@ -11,6 +11,7 @@
 @property (assign) CFTimeInterval appearDuration;
 @property (assign) CFTimeInterval fadeDuration;
 @property (nonatomic, assign) BOOL autoAppear;
+@property (nonatomic, strong) UIColor *animationTextColor;
 
 @property (nonatomic, strong, readonly) NSString *animationText;
 @property (nonatomic, assign, readonly, getter=isAnimating) BOOL animating;

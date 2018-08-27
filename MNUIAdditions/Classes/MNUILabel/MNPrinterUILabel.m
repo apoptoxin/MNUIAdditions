@@ -15,15 +15,15 @@
 //    precent = precent > 0.0 ?:0.0;
     int len = (int)((double)result.length * precent);
     if (forAppear) {
-        [result addAttribute:NSForegroundColorAttributeName value:[self.textColor colorWithAlphaComponent:forAppear?1.0:0.0] range:NSMakeRange(0, len)];
-        [result addAttribute:NSForegroundColorAttributeName value:[self.textColor colorWithAlphaComponent:forAppear?0.0:1.0] range:NSMakeRange(len , result.length - len)];
+        [result addAttribute:NSForegroundColorAttributeName value:[self.animationTextColor colorWithAlphaComponent:forAppear?1.0:0.0] range:NSMakeRange(0, len)];
+        [result addAttribute:NSForegroundColorAttributeName value:[self.animationTextColor colorWithAlphaComponent:forAppear?0.0:1.0] range:NSMakeRange(len , result.length - len)];
 //        [result removeAttribute:NSBaselineOffsetAttributeName range:NSMakeRange(0, len)];
 //        if (len > 0 && len < result.length) {
 //            [result addAttribute:NSBaselineOffsetAttributeName value:@(-5) range:NSMakeRange(len-1, 1)];
 //        }
     } else {
-        [result addAttribute:NSForegroundColorAttributeName value:[self.textColor colorWithAlphaComponent:0.0] range:NSMakeRange(0, len)];
-        [result addAttribute:NSForegroundColorAttributeName value:[self.textColor colorWithAlphaComponent:1.0] range:NSMakeRange(len , result.length - len)];
+        [result addAttribute:NSForegroundColorAttributeName value:[self.animationTextColor colorWithAlphaComponent:0.0] range:NSMakeRange(0, len)];
+        [result addAttribute:NSForegroundColorAttributeName value:[self.animationTextColor colorWithAlphaComponent:1.0] range:NSMakeRange(len , result.length - len)];
     }
     
     
