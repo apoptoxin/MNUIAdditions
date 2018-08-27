@@ -61,9 +61,9 @@
 - (MNAnimatedUILabel*)label {
     if (!_label) {
         _label = [[MNShinUILabel alloc] init];
-        _label.text = @"abcdefghijklmnopqrstuvwxyz";
+        _label.text = @"你以为只要长得漂亮就有男生喜欢？你以为只要有了钱漂亮妹子就自己贴上来了？你以为学霸就能找到好工作？我告诉你吧，这些都是真的！";
         _label.numberOfLines = 0;
-        _label.font = [UIFont systemFontOfSize:60];
+        _label.font = [UIFont systemFontOfSize:36];
         CGSize size = [_label.text sizeWithFont:_label.font constrainedToSize:CGSizeMake(self.view.frame.size.width - 50.0f,10000.0f)lineBreakMode:UILineBreakModeWordWrap];
         
         _label.frame = CGRectMake(0, 0, size.width, size.height);

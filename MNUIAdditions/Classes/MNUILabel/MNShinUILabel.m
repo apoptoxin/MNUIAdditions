@@ -68,6 +68,11 @@
         }
         [result addAttribute:NSForegroundColorAttributeName value:[self.animationTextColor colorWithAlphaComponent:forAppear?alpha:1-alpha] range:NSMakeRange(i, 1)];
     }
+//    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+//    [paragraphStyle setLineSpacing:10000.0];
+//    [result addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, result.length)];
+    [result addAttribute:NSKernAttributeName value:@(3.0) range:NSMakeRange(0, result.length)];
+    
     return result;
 }
 @end
